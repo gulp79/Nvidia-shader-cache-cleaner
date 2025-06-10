@@ -17,6 +17,8 @@ Una semplice applicazione desktop per Windows 11 che consente di cancellare rapi
 
 ## 🚀 Esecuzione locale
 
+Scarica l'ultima versione dell'exe nella sezione Release oppure:
+
 1. Installa Python 3.10+ da [python.org](https://www.python.org)
 2. Clona il progetto:
 
