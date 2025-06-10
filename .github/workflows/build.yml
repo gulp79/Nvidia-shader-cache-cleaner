@@ -21,6 +21,7 @@ jobs:
 
     - name: Build EXE
       run: pyinstaller --onefile --noconsole main.py
+      run: pyinstaller --noconsole --onefile --icon="icona.ico" --windowed --name "Nvidia-shader-cache-cleaner" main.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
