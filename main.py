@@ -10,6 +10,7 @@ CACHE_FOLDERS = {
     "DXCache": os.path.expandvars(r"%LocalAppData%\NVIDIA\DXCache"),
     "PerDriverVersion": os.path.expandvars(r"%LocalAppData%\NVIDIA\GLCache"),
     "ComputeCache": os.path.expandvars(r"%LocalAppData%\NVIDIA\ComputeCache"),
+    "NV_Cache": os.path.expandvars(r"%PROGRAMDATA%\NVIDIA Corporation\NV_Cache"),
     "D3DSCache": os.path.expandvars(r"%LocalAppData%\D3DSCache"),
 }
 
