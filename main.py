@@ -37,7 +37,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("NVIDIA Cache Cleaner")
-        self.geometry("460x480")
+        self.geometry("460x650")
         self.resizable(False, False)
 
         ctk.CTkLabel(self, text="🧹 NVIDIA Cache Cleaner", font=("Segoe UI Semibold", 22)).pack(pady=(20, 5))
