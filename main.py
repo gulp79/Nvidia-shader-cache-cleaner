@@ -1,51 +1,77 @@
 import os
 import shutil
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
-from tkinter import ttk
 
-# Cartelle di cache da pulire
-CACHE_FOLDERS = [
-    os.path.expandvars(r"%LocalAppData%\NVIDIA\DXCache"),
-    os.path.expandvars(r"%LocalAppData%\NVIDIA\GLCache"),
-    os.path.expandvars(r"%LocalAppData%\NVIDIA\ComputeCache"),
-    os.path.expandvars(r"%LocalAppData%\D3DSCache"),
-    os.path.expandvars(r"%ProgramData%\NVIDIA Corporation\NV_Cache"),
-]
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("green")
+
+CACHE_FOLDERS = {
+    "DXCache": os.path.expandvars(r"%LocalAppData%\NVIDIA\DXCache"),
+    "PerDriverVersion": os.path.expandvars(r"%LocalAppData%\NVIDIA\GLCache"),
+    "ComputeCache": os.path.expandvars(r"%LocalAppData%\NVIDIA\ComputeCache"),
+    "D3DSCache": os.path.expandvars(r"%LocalAppData%\D3DSCache"),
+}
 
 def delete_cache_folders():
     errors = []
-    for folder in CACHE_FOLDERS:
+    for name, folder in CACHE_FOLDERS.items():
         if os.path.exists(folder):
             try:
                 for filename in os.listdir(folder):
-                    file_path = os.path.join(folder, filename)
-                    if os.path.isfile(file_path) or os.path.islink(file_path):
-                        os.unlink(file_path)
-                    elif os.path.isdir(file_path):
-                        shutil.rmtree(file_path)
+                    path = os.path.join(folder, filename)
+                    if os.path.isfile(path) or os.path.islink(path):
+                        os.unlink(path)
+                    elif os.path.isdir(path):
+                        shutil.rmtree(path)
             except Exception as e:
-                errors.append(f"Errore con {folder}: {e}")
+                errors.append(f"{name}: {e}")
     if errors:
         messagebox.showerror("Errore", "\n".join(errors))
     else:
-        messagebox.showinfo("Successo", "Cache DirectX e NVIDIA pulita con successo!")
+        messagebox.showinfo("Pulizia completata", "Le cache NVIDIA/DirectX sono state eliminate.")
 
-# Interfaccia grafica
-app = tk.Tk()
-app.title("Pulizia Cache Shader NVIDIA")
-app.geometry("400x200")
-app.configure(bg="#1e1e1e")
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
 
-style = ttk.Style(app)
-style.theme_use("clam")
-style.configure("TButton", foreground="white", background="#3a3a3a", font=("Segoe UI", 12))
-style.map("TButton", background=[("active", "#505050")])
+        self.title("NVIDIA Cache Cleaner")
+        self.geometry("460x480")
+        self.resizable(False, False)
 
-label = tk.Label(app, text="Pulizia Cache Shader / DirectX 12", bg="#1e1e1e", fg="white", font=("Segoe UI", 14))
-label.pack(pady=20)
+        ctk.CTkLabel(self, text="🧹 NVIDIA Cache Cleaner", font=("Segoe UI Semibold", 22)).pack(pady=(20, 5))
+        ctk.CTkLabel(self, text="Pulitore Cache DirectX e Shader per Windows 11", font=("Segoe UI", 14)).pack()
 
-clean_button = ttk.Button(app, text="Avvia Pulizia Cache", command=delete_cache_folders)
-clean_button.pack(pady=10)
+        warning_text = (
+            "⚠️ Questa operazione eliminerà le cache precompilate.\n"
+            "I giochi potrebbero richiedere più tempo al primo avvio successivo."
+        )
+        ctk.CTkLabel(
+            self,
+            text=warning_text,
+            text_color="#ffcc00",
+            font=("Segoe UI", 12),
+            justify="center",
+            wraplength=420
+        ).pack(pady=20)
 
-app.mainloop()
+        for label, folder in CACHE_FOLDERS.items():
+            frame = ctk.CTkFrame(self, fg_color="#2b2b2b", corner_radius=8)
+            frame.pack(pady=5, padx=20, fill="x")
+            ctk.CTkLabel(frame, text=f"📂 {label}", font=("Segoe UI", 14), anchor="w").pack(side="left", padx=10, pady=8)
+            ctk.CTkLabel(frame, text=folder.split("\\")[-1], font=("Segoe UI", 12), text_color="#888").pack(side="right", padx=10)
+
+        ctk.CTkButton(
+            self,
+            text="🧹 Pulisci Cache NVIDIA",
+            command=delete_cache_folders,
+            fg_color="#32cd32",
+            hover_color="#2eb82e",
+            font=("Segoe UI Semibold", 16),
+            text_color="black",
+            height=40
+        ).pack(pady=30, ipadx=20)
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
