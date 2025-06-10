@@ -2,6 +2,9 @@
 
 Una semplice applicazione desktop per Windows 11 che consente di cancellare rapidamente le cache degli shader e di DirectX 12 delle GPU NVIDIA. Utile in caso di problemi grafici dopo aggiornamenti di giochi come Fortnite.
 
+<img width="353" alt="image" src="https://github.com/user-attachments/assets/955aeb2e-70b5-46b0-9aba-46bfea590720" />
+
+
 ## ✅ Funzionalità
 
 - Interfaccia grafica moderna in tema scuro.
